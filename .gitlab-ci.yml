@@ -1,0 +1,22 @@
+image: crops/yocto:ubuntu-18.04-base
+
+build:
+  stage: build
+  before_script: 
+    - ci/gitlab_build_pre_install.sh
+  script: 
+    - ci/gitlab_build.sh
+  artifacts:
+    paths:
+      - build/tmp/work/
+    when: on_success
+    expire_in: 30 days
+  # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
+  # cache:
+  #   paths:
+  #     - "*.o"
+
+test:
+  stage: test
+  script:
+    - ci/gitlab_test.sh
