@@ -8,7 +8,7 @@ build:
     - ci/gitlab_build.sh
   artifacts:
     paths:
-      - build/tmp/work/
+      - build/tmp/deploy/
     when: on_success
     expire_in: 30 days
   # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
