@@ -2,6 +2,8 @@
 source ci/gitlab_console_bitbake.sh
 
 bitbake --version
+
+mkdir -p './tmp/deploy/'
 bitbake -e > ./tmp/deploy/bitbake.bbenv.bb
 
 bitbake-layers show-layers
