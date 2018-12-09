@@ -3,7 +3,7 @@ image: crops/yocto:ubuntu-18.04-base
 build:
   stage: build
   before_script: 
-    - ci/gitlab_build_pre_install.sh
+    - ci/gitlab_build_pre.sh
   script: 
     - ci/gitlab_build.sh
   artifacts:
