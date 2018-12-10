@@ -14,5 +14,11 @@ bitbake example-bitbake-fetch
 bitbake example-bitbake-build-shell
 
 bitbake bitbake-oe
+bitbake bitbake-oe-python
+(
+    source 'tmp/work/bitbake-oe-python-2.4-r0/console.sh'
+    bitbake-layers show-layers
+    bitbake-layers show-recipes
+)
 
 # bitbake-layers layerindex-fetch meta-oe
