@@ -12,7 +12,7 @@ readonly PROJDIR="$(readlink -f ${SCRIPTDIR}/../)"
 
 setup_bitbake(){
     local bbdir='bitbake'
-    [ -d "${bbdir}" ] && git clean -dff "${bbdir}"
+    [ -d "${bbdir}" ] && git clean -Xdff "${bbdir}"
     git clone \
         "https://github.com/openembedded/bitbake" \
         "${bbdir}"
@@ -20,7 +20,7 @@ setup_bitbake(){
 
 setup_builddir(){
     local bdir='build'
-    [ -d "${bdir}" ] && git clean -dff "${bdir}"
+    [ -d "${bdir}" ] && git clean -Xdff "${bdir}"
     mkdir -p \
         "${bdir}/conf/"
     cp -T \
