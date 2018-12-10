@@ -13,4 +13,6 @@ bitbake example-base-only
 bitbake example-bitbake-fetch
 bitbake example-bitbake-build-shell
 
-bitbake-layers layerindex-fetch meta-oe
+bitbake bitbake-oe
+
+# bitbake-layers layerindex-fetch meta-oe
