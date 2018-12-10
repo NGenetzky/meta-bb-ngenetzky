@@ -10,5 +10,7 @@ bitbake-layers show-layers
 bitbake-layers show-recipes
 
 bitbake example-base-only
+bitbake example-bitbake-fetch
+bitbake example-bitbake-build-shell
 
 bitbake-layers layerindex-fetch meta-oe
