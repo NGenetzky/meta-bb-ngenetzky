@@ -7,7 +7,7 @@ inherit bitbake_oe
 inherit bitbake_conf
 BITBAKE_CONF_VARS = "\
     B \
-    BBLAYERS_DIR \
+    BITBAKE_OE_ROOT \
     YOCTO_CACHE_DIR \
 "
 
