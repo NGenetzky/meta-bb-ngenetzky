@@ -10,7 +10,7 @@ SRC_URI = ""
 
 # poky 2.4
 SRC_URI += "git://git.yoctoproject.org/poky.git;destsuffix=${BBLAYERS_DIR_SUFFIX};name=poky"
-SRCREV_poky = "05711ba18587aaaf4a9c465a1dd4537f27ceda93"
+SRCREV_poky = "65d23bd7986615fdfb0f1717b615534a2a14ab80"
 
 SRC_URI += "\
     file://bblayers.conf \
