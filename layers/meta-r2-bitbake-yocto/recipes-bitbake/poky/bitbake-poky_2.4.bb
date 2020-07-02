@@ -2,7 +2,7 @@ SUMMARY = "Build using Poky"
 PV = "2.4"
 PR = "r0"
 
-inherit bitbake_oe
+inherit bitbake_poky
 
 inherit bb_fetcher
 addtask do_unpack before do_build
