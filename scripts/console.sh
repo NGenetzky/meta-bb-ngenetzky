@@ -8,37 +8,26 @@
 # You should configure and run anything that needs to happen to open a console
 # for the requested environment.
 
-SOURCEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+oe_init_build_env(){
+    # We are attempting to other shells besides bash
+    # shellcheck disable=SC2128
+    if [ -n "$BASH_SOURCE" ]; then
+        THIS_SCRIPT=$BASH_SOURCE
+    elif [ -n "$ZSH_NAME" ]; then
+        THIS_SCRIPT=$0
+    else
+        THIS_SCRIPT="$(pwd)/oe-init-build-env"
+        if [ ! -e "$THIS_SCRIPT" ]; then
+            echo "Error: $THIS_SCRIPT doesn't exist!" >&2
+            echo "Please run this script in oe-init-build-env's directory." >&2
+            return 1
+        fi
+    fi
 
-readonly BASEDIR="$(readlink -f ${SOURCEDIR}/../)"
-readonly BUILD_DIR="${BASEDIR}/build"
-readonly BITBAKE_DIR="${BASEDIR}/bitbake"
-
-bitbake_set_path(){
-    local p="$(readlink -f ${1?})"
-    [[ -d ${p} ]] || return 1
-    export PATH="${p}/bin:$PATH"
-    export PYTHONPATH="${p}/lib:$PYTHONPATH"
+    BASEDIR="$(dirname "$(readlink -f "$THIS_SCRIPT")")"
+    # shellcheck disable=SC1090
+    . "${BASEDIR}/oe-init-build-env"
 }
 
-enter_builddir(){
-    local p="$(readlink -f ${1?})"
-    mkdir -p "${p}"
-    export BBPATH="${p}"
-    cd "${p}"
-}
-
-main(){
-    bitbake_set_path "${BITBAKE_DIR}"
-    enter_builddir "${BUILD_DIR}"
-}
-
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    echo "Please source $0 rather than execute it."
-else
-    main
-
-    unset main
-    unset bitbake_set_path
-    unset cd_to_builddir
-fi
+oe_init_build_env "$@"
+unset oe_init_build_env
