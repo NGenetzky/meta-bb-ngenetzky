@@ -6,16 +6,10 @@
 #
 # This is also useful for ensuring that your bootstrapping actually works well.
 
-SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
-
-readonly PROJDIR="$(readlink -f ${SCRIPTDIR}/../)"
-
 setup_bitbake(){
     local bbdir='bitbake'
-    [ -d "${bbdir}" ] && git clean -Xdff "${bbdir}"
-    git clone \
-        "https://github.com/openembedded/bitbake" \
-        "${bbdir}"
+    [ -d "${bbdir}/bin/" ] && return
+    git submodule update --init bitbake
 }
 
 setup_builddir(){
@@ -41,6 +35,11 @@ main(){
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     # Bash Strict Mode
     set -eu -o pipefail
+
+    SCRIPTDIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd -P)"
+
+    PROJDIR="$(readlink -f "${SCRIPTDIR}"/../)"
+    readonly PROJDIR
 
     set -x
     main "$@"
