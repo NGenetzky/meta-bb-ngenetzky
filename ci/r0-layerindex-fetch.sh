@@ -14,7 +14,3 @@ bitbake-layers show-layers
 bitbake-layers show-recipes
 
 bitbake-layers layerindex-fetch meta-oe
-
-bitbake-layers show-layers
-bitbake-layers show-recipes
-
