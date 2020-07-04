@@ -1,5 +1,9 @@
-#!/bin/bash -xe
+#!/bin/bash
 source ci/gitlab_console_bitbake.sh
+
+# NOTE: this *must* be done after sourcing 'oe-init-build-env'
+# Posix Strict Mode
+set -eu
 
 bitbake --version
 

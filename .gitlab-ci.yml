@@ -2,9 +2,9 @@ image: crops/yocto:ubuntu-18.04-base
 
 build:
   stage: build
-  before_script: 
-    - ci/gitlab_build_pre.sh
-  script: 
+  before_script:
+    - ./scripts/setup.sh
+  script:
     - ci/gitlab_build.sh
   artifacts:
     paths:
@@ -15,8 +15,3 @@ build:
   # cache:
   #   paths:
   #     - "*.o"
-
-test:
-  stage: test
-  script:
-    - ci/gitlab_test.sh
