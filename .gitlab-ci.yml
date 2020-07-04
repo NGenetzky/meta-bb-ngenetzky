@@ -1,17 +1,24 @@
 image: crops/yocto:ubuntu-18.04-base
 
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""  # https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
+
 build:
+  image: crops/yocto:ubuntu-18.04-base
   stage: build
   before_script:
     - ./scripts/setup.sh
   script:
-    - ci/gitlab_build.sh
+    - ci/simple-r0.sh
+    - ci/simple-r1.sh
+    - ci/simple-r0-layerindex-fetch.sh
   artifacts:
     paths:
       - build/tmp/deploy/
-    when: on_success
-    expire_in: 30 days
-  # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-  # cache:
-  #   paths:
-  #     - "*.o"
+  cache:
+    key: "gitlab_build"
+    paths:
+      - "build/tmp/cache/"
+      - "build/tmp/downloads/"
+      - "build/tmp/sstate-cache/"
