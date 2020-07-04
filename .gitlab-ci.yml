@@ -35,3 +35,22 @@ simple-r0-layerindex-fetch:
   extends: .bitbake_simple
   script:
     - ci/r0-layerindex-fetch.sh
+
+.kas_simple: &kas_simple_template
+  image: kasproject/kas:2.1.1
+  stage: build
+  script:
+    - kas build 'kas/r1-bb-examples.yml'
+  variables:
+    KAS_REPO_REF_DIR: "${CI_PROJECT_DIR}/build/tmp/downloads/"
+  cache:
+    key: "kas_simple"
+    paths:
+      - "build/tmp/cache/"
+      - "build/tmp/downloads/"
+      - "build/tmp/sstate-cache/"
+
+r1-bb-examples:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r1-bb-examples.yml'
