@@ -1,0 +1,101 @@
+#!/bin/sh
+
+# OE Build Environment Setup Script
+#
+# Copyright (C) 2006-2011 Linux Foundation
+# Copyright (C) 2020 Nathan Genetzky
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+
+# Attempted to be as compatible with the 'oe-init-build-env' as possible.
+# WARNING: Unhandled use cases. poky/oe-init-build-env much more robust.
+#
+# These environment variables are defined "upstream" and can customize the process.
+# - BITBAKEDIR
+# - BUILDDIR
+#
+# Designed for use with 'kas'.
+# - Configuration of 'bblayers' and 'local.conf' is done through kas.
+
+bitbake_set_path(){
+    p="$(readlink -f "${1?}")"
+    if [ ! -d "${p}/bin/" ]; then
+      return 1
+    fi
+
+    export PATH="${p}/bin:$PATH"
+    export PYTHONPATH="${p}/lib:$PYTHONPATH"
+}
+
+_oe_init_build_env(){
+    if [ -z "${1-}" ]; then
+        d_build="${BUILDDIR-build}"
+    else
+        d_build="$1"
+    fi
+    d_build="$(readlink -f "${d_build}")"
+
+    if ! command -v bitbake > /dev/null ; then
+        if [ -z "$2" ]; then
+            if [ -z "$BITBAKEDIR" ]; then
+                # WARNING: This is very specific for a specific setup.
+                d_bitbake="$(git rev-parse --show-cdup)bitbake"
+                if [ ! -d "${d_bitbake}/bin/" ]; then
+                    # NOTE: kas does not support git submodules natively.
+                    git submodule update --init "${d_bitbake}"
+                fi
+                if [ ! -d "${d_bitbake}/bin/" ]; then
+                    echo 'ERROR: Unable to locate bitbake'
+                    return 1
+                fi
+            else
+                d_bitbake="${BITBAKEDIR}"
+            fi
+        else
+            d_bitbake="${2?}"
+        fi
+        bitbake_set_path "${d_bitbake}"
+    fi
+
+    mkdir -p "${d_build}"
+    export BBPATH="${d_build}"
+    if ! cd "${d_build}" ; then
+        echo "Failed to cd into d_build (${d_build})" >&2
+        return 1
+    fi
+    return 0
+}
+
+oe_init_build_env(){
+    # We are attempting to other shells besides bash
+    # shellcheck disable=SC2128
+    if [ -n "$BASH_SOURCE" ]; then
+        THIS_SCRIPT=$BASH_SOURCE
+    # WARNING: This is disabled because it is unreliable.
+    # elif [ -n "$ZSH_NAME" ]; then
+    #     THIS_SCRIPT=$0
+    else
+        THIS_SCRIPT="$(pwd)/oe-init-build-env"
+        if [ ! -e "$THIS_SCRIPT" ]; then
+            echo "Error: $THIS_SCRIPT doesn't exist!" >&2
+            echo "Please run this script in oe-init-build-env's directory." >&2
+            return 1
+        fi
+    fi
+
+    BASEDIR="$(dirname "$(readlink -f "$THIS_SCRIPT")")"
+    OEROOT="${OEROOT-"${BASEDIR}"}"
+    if ! cd "${OEROOT}" ; then
+        echo "Failed to cd into OEROOT (${OEROOT})" >&2
+        return 1
+    fi
+
+    _oe_init_build_env "$@"
+}
+
+oe_init_build_env "$@"
+unset \
+    _oe_init_build_env \
+    bitbake_set_path \
+    oe_init_build_env

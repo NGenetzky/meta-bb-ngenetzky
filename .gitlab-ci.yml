@@ -1,22 +1,71 @@
 image: crops/yocto:ubuntu-18.04-base
 
-build:
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""  # https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
+
+.bitbake_simple: &bitbake_simple_template
+  image: crops/yocto:ubuntu-18.04-base
   stage: build
-  before_script: 
-    - ci/gitlab_build_pre.sh
-  script: 
-    - ci/gitlab_build.sh
+  before_script:
+    - ./scripts/setup.sh
+  script:
+    - ci/r0-simple.sh
   artifacts:
     paths:
       - build/tmp/deploy/
-    when: on_success
-    expire_in: 30 days
-  # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-  # cache:
-  #   paths:
-  #     - "*.o"
+  cache:
+    key: "gitlab_build"
+    paths:
+      - "build/tmp/cache/"
+      - "build/tmp/downloads/"
+      - "build/tmp/sstate-cache/"
 
-test:
-  stage: test
+simple-r0:
+  extends: .bitbake_simple
   script:
-    - ci/gitlab_test.sh
+    - ci/r0-simple.sh
+
+simple-r1:
+  extends: .bitbake_simple
+  script:
+    - ci/r1-simple.sh
+
+simple-r0-layerindex-fetch:
+  extends: .bitbake_simple
+  script:
+    - ci/r0-layerindex-fetch.sh
+
+.kas_simple: &kas_simple_template
+  image: kasproject/kas:2.1.1
+  stage: build
+  script:
+    - kas build 'kas/r1-bb-examples.yml'
+  variables:
+    KAS_REPO_REF_DIR: "${CI_PROJECT_DIR}/build/tmp/downloads/"
+  cache:
+    key: "kas_simple"
+    paths:
+      - "build/tmp/cache/"
+      - "build/tmp/downloads/"
+      - "build/tmp/sstate-cache/"
+
+r0-bb-examples:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r0-base-only.yml'
+
+r1-bb-examples:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r1-bb-examples.yml'
+
+r1-git-bb-fetch:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r1-git-bb-fetch.yml'
+
+r1-git-bb-build-shell:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r1-git-bb-build-shell.yml'

@@ -8,37 +8,26 @@
 # You should configure and run anything that needs to happen to open a console
 # for the requested environment.
 
-SOURCEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+oe_init_build_env(){
+    # We are attempting to other shells besides bash
+    # shellcheck disable=SC2128
+    if [ -n "$BASH_SOURCE" ]; then
+        OEROOT="$(dirname "$(readlink -f "$BASH_SOURCE")")/../"
+    else
+        OEROOT="./"
+    fi
+    _DEFAULT_OE_INIT="${OEROOT}/oe-init-build-env"
 
-readonly BASEDIR="$(readlink -f ${SOURCEDIR}/../)"
-readonly BUILD_DIR="${BASEDIR}/build"
-readonly BITBAKE_DIR="${BASEDIR}/bitbake"
+    OE_INIT_BUILD_ENV="${OE_INIT_BUILD_ENV-"${_DEFAULT_OE_INIT}"}"
+    if [ ! -e "$OE_INIT_BUILD_ENV" ]; then
+        echo "Error: $OE_INIT_BUILD_ENV doesn't exist!" >&2
+        echo "Please source this script in BASEDIR." >&2
+        return 1
+    fi
 
-bitbake_set_path(){
-    local p="$(readlink -f ${1?})"
-    [[ -d ${p} ]] || return 1
-    export PATH="${p}/bin:$PATH"
-    export PYTHONPATH="${p}/lib:$PYTHONPATH"
+    # shellcheck disable=SC1090
+    . "${OE_INIT_BUILD_ENV}"
 }
 
-enter_builddir(){
-    local p="$(readlink -f ${1?})"
-    mkdir -p "${p}"
-    export BBPATH="${p}"
-    cd "${p}"
-}
-
-main(){
-    bitbake_set_path "${BITBAKE_DIR}"
-    enter_builddir "${BUILD_DIR}"
-}
-
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    echo "Please source $0 rather than execute it."
-else
-    main
-
-    unset main
-    unset bitbake_set_path
-    unset cd_to_builddir
-fi
+oe_init_build_env "$@"
+unset oe_init_build_env
