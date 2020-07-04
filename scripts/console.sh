@@ -12,21 +12,21 @@ oe_init_build_env(){
     # We are attempting to other shells besides bash
     # shellcheck disable=SC2128
     if [ -n "$BASH_SOURCE" ]; then
-        THIS_SCRIPT=$BASH_SOURCE
-    elif [ -n "$ZSH_NAME" ]; then
-        THIS_SCRIPT=$0
+        OEROOT="$(dirname "$(readlink -f "$BASH_SOURCE")")/../"
     else
-        THIS_SCRIPT="$(pwd)/oe-init-build-env"
-        if [ ! -e "$THIS_SCRIPT" ]; then
-            echo "Error: $THIS_SCRIPT doesn't exist!" >&2
-            echo "Please run this script in oe-init-build-env's directory." >&2
-            return 1
-        fi
+        OEROOT="./"
+    fi
+    _DEFAULT_OE_INIT="${OEROOT}/oe-init-build-env"
+
+    OE_INIT_BUILD_ENV="${OE_INIT_BUILD_ENV-"${_DEFAULT_OE_INIT}"}"
+    if [ ! -e "$OE_INIT_BUILD_ENV" ]; then
+        echo "Error: $OE_INIT_BUILD_ENV doesn't exist!" >&2
+        echo "Please source this script in BASEDIR." >&2
+        return 1
     fi
 
-    BASEDIR="$(dirname "$(readlink -f "$THIS_SCRIPT")")"
     # shellcheck disable=SC1090
-    . "${BASEDIR}/oe-init-build-env"
+    . "${OE_INIT_BUILD_ENV}"
 }
 
 oe_init_build_env "$@"

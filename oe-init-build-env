@@ -60,7 +60,11 @@ _oe_init_build_env(){
 
     mkdir -p "${d_build}"
     export BBPATH="${d_build}"
-    cd "${d_build}" || return 1
+    if ! cd "${d_build}" ; then
+        echo "Failed to cd into d_build (${d_build})" >&2
+        return 1
+    fi
+    return 0
 }
 
 oe_init_build_env(){
@@ -68,8 +72,9 @@ oe_init_build_env(){
     # shellcheck disable=SC2128
     if [ -n "$BASH_SOURCE" ]; then
         THIS_SCRIPT=$BASH_SOURCE
-    elif [ -n "$ZSH_NAME" ]; then
-        THIS_SCRIPT=$0
+    # WARNING: This is disabled because it is unreliable.
+    # elif [ -n "$ZSH_NAME" ]; then
+    #     THIS_SCRIPT=$0
     else
         THIS_SCRIPT="$(pwd)/oe-init-build-env"
         if [ ! -e "$THIS_SCRIPT" ]; then
@@ -80,8 +85,9 @@ oe_init_build_env(){
     fi
 
     BASEDIR="$(dirname "$(readlink -f "$THIS_SCRIPT")")"
-    if ! cd "${BASEDIR}" ; then
-        echo "Failed to cd into BASEDIR (${BASEDIR})" >&2
+    OEROOT="${OEROOT-"${BASEDIR}"}"
+    if ! cd "${OEROOT}" ; then
+        echo "Failed to cd into OEROOT (${OEROOT})" >&2
         return 1
     fi
 
