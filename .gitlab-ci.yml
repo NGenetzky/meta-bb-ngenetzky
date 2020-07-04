@@ -50,7 +50,22 @@ simple-r0-layerindex-fetch:
       - "build/tmp/downloads/"
       - "build/tmp/sstate-cache/"
 
+r0-bb-examples:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r0-base-only.yml'
+
 r1-bb-examples:
   extends: .kas_simple
   script:
     - kas build 'kas/r1-bb-examples.yml'
+
+r1-git-bb-fetch:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r1-git-bb-fetch.yml'
+
+r1-git-bb-build-shell:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r1-git-bb-build-shell.yml'
