@@ -1,0 +1,16 @@
+header:
+  version: 8
+
+target: world
+
+env:
+  SHELL: bash
+
+repos:
+  meta-bb-project-base:
+    url: "https://gitlab.com/ngenetzky/meta-bb-project-base.git"
+    refspec: "c419707fb1b15697dda6339cda9889c7033ee1f8"
+    path: "build/layers/meta-bb-project-base/"
+    layers:
+      meta-r0-base:
+      meta-r0-base/meta-examples:
