@@ -9,7 +9,7 @@ env:
 repos:
   meta-bb-project-base:
     url: "https://gitlab.com/ngenetzky/meta-bb-project-base.git"
-    refspec: "c419707fb1b15697dda6339cda9889c7033ee1f8"
+    refspec: "488de59a971b769cbe059e041c495600311abf8b"
     path: "build/layers/meta-bb-project-base/"
     layers:
       meta-r0-base:

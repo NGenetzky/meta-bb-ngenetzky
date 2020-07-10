@@ -9,6 +9,6 @@ env:
 repos:
   local:
     layers:
-      layers/meta-r0:
-      layers/meta-r1-bb:
-      layers/meta-r1-bb/meta-examples:
+      meta-r0-base:
+      meta-r1-bb:
+      meta-r1-bb/meta-examples:
