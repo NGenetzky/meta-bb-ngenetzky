@@ -23,7 +23,6 @@ setup_builddir(){
     mkdir -p \
         "${bdir}/layers/"
     ln -fsr -t "${bdir}/layers/" \
-        layers/* \
         meta-*
 }
 
