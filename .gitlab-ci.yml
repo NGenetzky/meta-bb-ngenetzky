@@ -60,6 +60,11 @@ r1-bb-examples:
   script:
     - kas build 'kas/r1-bb-examples.yml'
 
+r0-bb-base:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r0-git-base-only.yml'
+
 r1-git-bb-fetch:
   extends: .kas_simple
   script:
