@@ -15,10 +15,18 @@ SRC_URI += "git://github.com/openembedded/bitbake.git;destsuffix=${PN}-${PV}/bit
 # meta-openembedded_2.4
 SRC_URI += "git://github.com/openembedded/meta-openembedded.git;destsuffix=${PN}-${PV}/meta-openembedded;branch=rocko;rev=eae996301d9c097bcbeb8046f08041dc82bb62f8"
 
+# NOTE: We specify 'dirs' here to handle shells that can't determine path to oe-init.
+console[dirs] = "${BITBAKE_OE_ROOT}"
 console(){
-    . "${S}/oe-init-build-env" \
+    # TODO: Do proper store and resume
+    set +e
+
+    . "${BITBAKE_OE_ROOT}/oe-init-build-env" \
         "${B}" \
-        "${S}/bitbake"
+        "${BITBAKE_OE_ROOT}/bitbake"
+
+    # TODO: Do proper store and resume
+    set -e
 }
 
 inherit bb_build_shell
@@ -29,6 +37,8 @@ python do_build_shell_scripts(){
     export_func_shell('console', d, os.path.join(workdir, 'console.sh'), workdir)
 }
 
+# NOTE: We specify 'dirs' here to handle shells that can't determine path to oe-init.
+do_build[dirs] = "${BITBAKE_OE_ROOT}"
 do_build(){
     console
 
