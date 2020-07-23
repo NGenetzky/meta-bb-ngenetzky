@@ -27,8 +27,4 @@ BITBAKE_CONF_VARS = "\
 do_build_append(){
     bitbake-layers show-layers > "${WORKDIR}/${PF}.layers.log"
     bitbake-layers show-recipes > "${WORKDIR}/${PF}.recipes.log"
-
-    cp -t "${DEPLOY_DIR}" \
-        "${WORKDIR}/${PF}.layers.log" \
-        "${WORKDIR}/${PF}.recipes.log"
 }

@@ -1,52 +1,21 @@
 SUMMARY = "Build using OpenEmbedded"
 PV = "2.4"
-PR = "r0"
+PR = "r1"
 
-B = "${WORKDIR}/build"
+inherit bitbake_oe
 
 inherit bb_fetcher
 addtask do_unpack before do_build
 SRC_URI = ""
-
 # openembedded-core_2.4
-SRC_URI += "git://github.com/openembedded/openembedded-core.git;destsuffix=${PN}-${PV};branch=rocko;rev=7d518d342eb67d25aa071fb08d03f06d6da576c6"
+SRC_URI += "git://github.com/openembedded/openembedded-core.git;destsuffix=${BBLAYERS_DIR};branch=rocko;rev=7d518d342eb67d25aa071fb08d03f06d6da576c6"
 # bitbake_1.39
-SRC_URI += "git://github.com/openembedded/bitbake.git;destsuffix=${PN}-${PV}/bitbake;rev=82ea737a0b42a8b53e11c9cde141e9e9c0bd8c40"
+SRC_URI += "git://github.com/openembedded/bitbake.git;destsuffix=${BBLAYERS_DIR}/bitbake;rev=82ea737a0b42a8b53e11c9cde141e9e9c0bd8c40"
 # meta-openembedded_2.4
-SRC_URI += "git://github.com/openembedded/meta-openembedded.git;destsuffix=${PN}-${PV}/meta-openembedded;branch=rocko;rev=eae996301d9c097bcbeb8046f08041dc82bb62f8"
+SRC_URI += "git://github.com/openembedded/meta-openembedded.git;destsuffix=${BBLAYERS_DIR}/meta-openembedded;branch=rocko;rev=eae996301d9c097bcbeb8046f08041dc82bb62f8"
 
-# NOTE: We specify 'dirs' here to handle shells that can't determine path to oe-init.
-console[dirs] = "${BITBAKE_OE_ROOT}"
-console(){
-    # TODO: Do proper store and resume
-    set +e
-
-    . "${BITBAKE_OE_ROOT}/oe-init-build-env" \
-        "${B}" \
-        "${BITBAKE_OE_ROOT}/bitbake"
-
-    # TODO: Do proper store and resume
-    set -e
-}
-
-inherit bb_build_shell
-do_build_shell_scripts[nostamp] = "1"
-addtask do_build_shell_scripts before do_build
-python do_build_shell_scripts(){
-    workdir = d.getVar('WORKDIR', expand=True)
-    export_func_shell('console', d, os.path.join(workdir, 'console.sh'), workdir)
-}
-
-# NOTE: We specify 'dirs' here to handle shells that can't determine path to oe-init.
-do_build[dirs] = "${BITBAKE_OE_ROOT}"
-do_build(){
-    console
-
+do_build_append(){
     bitbake-layers show-layers > "${WORKDIR}/${PF}.layers.log"
     bitbake-layers show-recipes > "${WORKDIR}/${PF}.recipes.log"
-
-    cp -t "${DEPLOY_DIR}" \
-        "${WORKDIR}/${PF}.layers.log" \
-        "${WORKDIR}/${PF}.recipes.log"
 }
 
