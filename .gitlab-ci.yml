@@ -11,15 +11,16 @@ variables:
     - ./scripts/setup.sh
   script:
     - ci/r0-simple.sh
-  artifacts:
-    paths:
-      - build/tmp/deploy/
   cache:
     key: "gitlab_build"
     paths:
-      - "build/tmp/cache/"
-      - "build/tmp/downloads/"
-      - "build/tmp/sstate-cache/"
+      - "build/tmp/cache/" # PERSISTENT_DIR
+      - "build/tmp/downloads/" # DL_DIR
+      # - "build/tmp/sstate-cache/" # TODO: Not used yet.
+  artifacts:
+    paths:
+      - build/tmp/deploy/ # DEPLOY_DIR
+      - build/bitbake-cookerdaemon.log
 
 simple-r0:
   extends: .bitbake_simple
@@ -41,9 +42,13 @@ simple-r1:
   cache:
     key: "kas_simple"
     paths:
-      - "build/tmp/cache/"
-      - "build/tmp/downloads/"
-      - "build/tmp/sstate-cache/"
+      - "build/tmp/cache/" # PERSISTENT_DIR
+      - "build/tmp/downloads/" # DL_DIR
+      # - "build/tmp/sstate-cache/" # TODO: Not used yet.
+  artifacts:
+    paths:
+      - build/tmp/deploy/ # DEPLOY_DIR
+      - build/bitbake-cookerdaemon.log
 
 r0-bb-examples:
   extends: .kas_simple
