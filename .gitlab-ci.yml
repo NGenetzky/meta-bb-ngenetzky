@@ -31,11 +31,6 @@ simple-r1:
   script:
     - ci/r1-simple.sh
 
-simple-r0-layerindex-fetch:
-  extends: .bitbake_simple
-  script:
-    - ci/r0-layerindex-fetch.sh
-
 .kas_simple: &kas_simple_template
   image: kasproject/kas:2.1.1
   stage: build
