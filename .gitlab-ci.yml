@@ -38,7 +38,8 @@ simple-r1:
   script:
     - kas build 'kas/r1-bb-examples.yml'
   variables:
-    KAS_REPO_REF_DIR: "${CI_PROJECT_DIR}/build/tmp/downloads/"
+    # We will reuse the git repos created by the git fetcher for kas.
+    KAS_REPO_REF_DIR: "${CI_PROJECT_DIR}/build/tmp/downloads/git/"
   cache:
     key: "kas_simple"
     paths:
