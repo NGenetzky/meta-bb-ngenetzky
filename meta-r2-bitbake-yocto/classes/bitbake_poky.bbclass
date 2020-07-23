@@ -11,10 +11,18 @@ YOCTO_CACHE_DIR ?= "${PERSISTENT_DIR}/yocto-${BITBAKE_OE_NAME}-${BITBAKE_OE_VERS
 S ?= "${BITBAKE_OE_ROOT}"
 B = "${WORKDIR}/build"
 
+# NOTE: We specify 'dirs' here to handle shells that can't determine path to oe-init.
+console[dirs] = "${BITBAKE_OE_ROOT}"
 console(){
+    # TODO: Do proper store and resume
+    set +e
+
     . "${BITBAKE_OE_ROOT}/oe-init-build-env" \
         "${B}" \
         "${BITBAKE_OE_ROOT}/bitbake"
+
+    # TODO: Do proper store and resume
+    set -e
 }
 
 inherit bb_build_shell
@@ -23,4 +31,10 @@ addtask do_build_shell_scripts before do_build
 python do_build_shell_scripts(){
     workdir = d.getVar('WORKDIR', expand=True)
     export_func_shell('console', d, os.path.join(workdir, 'console.sh'), workdir)
+}
+
+# NOTE: We specify 'dirs' here to handle shells that can't determine path to oe-init.
+do_build[dirs] = "${BITBAKE_OE_ROOT}"
+do_build(){
+    console
 }
