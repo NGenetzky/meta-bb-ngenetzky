@@ -23,3 +23,14 @@ BITBAKE_CONF_VARS = "\
     BITBAKE_OE_ROOT \
     YOCTO_CACHE_DIR \
 "
+
+do_build(){
+    console
+
+    bitbake-layers show-layers > "${WORKDIR}/${PF}.layers.log"
+    bitbake-layers show-recipes > "${WORKDIR}/${PF}.recipes.log"
+
+    cp -t "${DEPLOY_DIR}" \
+        "${WORKDIR}/${PF}.layers.log" \
+        "${WORKDIR}/${PF}.recipes.log"
+}

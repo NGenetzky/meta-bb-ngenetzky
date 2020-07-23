@@ -28,3 +28,15 @@ python do_build_shell_scripts(){
     workdir = d.getVar('WORKDIR', expand=True)
     export_func_shell('console', d, os.path.join(workdir, 'console.sh'), workdir)
 }
+
+do_build(){
+    console
+
+    bitbake-layers show-layers > "${WORKDIR}/${PF}.layers.log"
+    bitbake-layers show-recipes > "${WORKDIR}/${PF}.recipes.log"
+
+    cp -t "${DEPLOY_DIR}" \
+        "${WORKDIR}/${PF}.layers.log" \
+        "${WORKDIR}/${PF}.recipes.log"
+}
+
