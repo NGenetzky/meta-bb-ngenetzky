@@ -1,18 +1,23 @@
 # TODO: Warn if "${B}" != "${WORKDIR}/build/"
 
 KAS_FILES = "${WORKDIR}/kas.yml"
+KAS_REPO_REF_DIR ??= "${DL_DIR}/git/"
 
-exec_kas(){
+# ENV for kas
+export KAS_REPO_REF_DIR
+
+kas_exec(){
     # WARNING: This assumes you are inside of docker container
     # TODO: Make it more flexbile
     python3 -m kas "$@"
 }
 
-console(){
-    KAS_REPO_REF_DIR="${DL_DIR}/git/"
-    export KAS_REPO_REF_DIR
+kas_shell(){
+    kas_exec shell "${KAS_FILES}"
+}
 
-    exec_kas shell "${KAS_FILES}"
+console(){
+    kas_shell
 }
 
 inherit bb_build_shell
@@ -25,9 +30,6 @@ python do_build_shell_scripts(){
 
 do_build[dirs] = "${B} ${WORKDIR}"
 do_build(){
-    KAS_REPO_REF_DIR="${DL_DIR}/git/"
-    export KAS_REPO_REF_DIR
-
     # We must use 'kas' at least once, to ensure it is properly fetched.
-    exec_kas shell "${KAS_FILES}" -c 'bitbake-layers show-recipes > recipes.log'
+    kas_exec shell "${KAS_FILES}" -c 'bitbake-layers show-recipes > recipes.log'
 }
