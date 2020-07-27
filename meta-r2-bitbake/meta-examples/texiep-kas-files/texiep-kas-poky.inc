@@ -23,6 +23,9 @@ python do_build_shell_scripts(){
     export_func_shell('kas_build', d, os.path.join(workdir, 'kas_build.sh'), workdir)
 }
 
+inherit bitbake_cache
+BITBAKE_CACHE_KEY_PULL = "texiep-kas-poky-minimal-${PV}-${PR}"
+
 do_build[dirs] = "${B} ${WORKDIR}"
 do_build(){
     # We must use 'kas' at least once, to ensure it is properly fetched.
