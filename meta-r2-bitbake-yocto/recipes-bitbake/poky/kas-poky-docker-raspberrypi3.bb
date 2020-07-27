@@ -10,5 +10,6 @@ SRCREV = "65b03fc80dffeee7fb1718420b20de5cef77579d"
 SRC_URI = "git://github.com/texierp/kas-files.git;destsuffix=${PN}-${PV}/"
 
 inherit bitbake_kas
+B = "${WORKDIR}/build/"
 KAS_FILES = "${S}/kas-poky.yml"
 # KAS_FILES = "${S}/kas-poky.yml:${S}/kas-files/docker-raspberrypi3.yml" # TODO

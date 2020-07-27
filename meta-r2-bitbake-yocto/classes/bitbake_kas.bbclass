@@ -1,3 +1,4 @@
+# TODO: Warn if "${B}" != "${WORKDIR}/build/"
 
 KAS_FILES = "${WORKDIR}/kas.yml"
 
