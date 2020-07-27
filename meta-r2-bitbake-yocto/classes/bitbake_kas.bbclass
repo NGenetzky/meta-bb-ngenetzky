@@ -16,6 +16,10 @@ kas_shell(){
     kas_exec shell "${KAS_FILES}"
 }
 
+kas_build(){
+    kas_exec build "${KAS_FILES}"
+}
+
 console(){
     kas_shell
 }
@@ -26,6 +30,8 @@ addtask do_build_shell_scripts before do_build
 python do_build_shell_scripts(){
     workdir = d.getVar('WORKDIR', expand=True)
     export_func_shell('console', d, os.path.join(workdir, 'console.sh'), workdir)
+    export_func_shell('kas_shell', d, os.path.join(workdir, 'kas_shell.sh'), workdir)
+    export_func_shell('kas_build', d, os.path.join(workdir, 'kas_build.sh'), workdir)
 }
 
 do_build[dirs] = "${B} ${WORKDIR}"
