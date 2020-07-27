@@ -24,6 +24,7 @@ python do_build_shell_scripts(){
 }
 
 inherit bitbake_cache
+BITBAKE_CACHE_KEY_PULL = "texiep-kas-poky-minimal-${PV}-${PR}"
 
 do_build[dirs] = "${B} ${WORKDIR}"
 do_build(){
