@@ -11,4 +11,5 @@ repos:
     layers:
       meta-r0-base:
       meta-r1-bb:
+      meta-r2-bitbake:
       meta-r2-bitbake-yocto:
