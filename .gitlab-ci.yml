@@ -61,6 +61,11 @@ r1-bb-examples:
   script:
     - kas build 'kas/r1-bb-examples.yml'
 
+r2-bitbake-examples:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r2-bitbake-examples.yml'
+
 r2-bitbake-yocto-examples:
   extends: .kas_simple
   script:
