@@ -25,6 +25,12 @@ do_bitbake_cache_push(){
     fi
 
     d_cache="${BITBAKE_CACHE_DIR}/${cache_key}"
+    if [ -d "${d_cache}" ] ; then
+        bbnote "bitbake_cache: push replacing existing cache"
+    else
+        install -d "${d_cache}"
+    fi
+
     d_downloads="${B}/downloads"
     d_sstate="${B}/sstate-cache"
 
