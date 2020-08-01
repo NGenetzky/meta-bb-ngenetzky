@@ -1,19 +1,21 @@
 SUMMARY = "The official balena CLI tool"
 PV = "12.9.7"
-PR = "r0"
+PR = "r1"
 
-B = "${WORKDIR}/env"
+inherit bb_venv
+addtask do_bootstrap before do_build
 
-activate(){
-    . '${B}/bin/activate'
-}
+do_bootstrap_append(){
+    if [ -z "${VIRTUAL_ENV+x}" ] ; then
+        bbexit "Failed to setup virtual env"
+        exit 1
+    fi
+    if [ -z "${NODE_VIRTUAL_ENV+x}" ] ; then
+        pip install nodeenv
+        nodeenv -p
+        bbnote "Installed nodeenv V=$(nodeenv --version)"
 
-addtask do_bootstrap after do_setup before do_build
-do_bootstrap(){
-    virtualenv "${B}"
-    activate
-    pip install nodeenv
-    nodeenv -p
+    fi
 }
 
 inherit bb_build_shell
@@ -24,7 +26,7 @@ python do_build_shell_scripts(){
     export_func_shell('activate', d, os.path.join(workdir, 'activate.sh'), workdir)
 }
 
-do_build[dirs] = "${B} ${S}"
+do_build[dirs] = "${B}"
 do_build(){
     activate
     # TODO: Build from source
