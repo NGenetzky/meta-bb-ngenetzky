@@ -14,7 +14,7 @@ B = "${S}/build/"
 inherit bitbake_cache
 
 barys_exec(){
-    "${S}/balena-yocto-scripts/build/barys"
+    "${S}/balena-yocto-scripts/build/barys" "$@"
 }
 
 BITBAKE_OE_ROOT = "${S}/layers/poky"
