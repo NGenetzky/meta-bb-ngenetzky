@@ -6,9 +6,9 @@ header:
     - repo: meta-homeassistant
       file: kas-qemu.yml
 
-# machine: qemuarm64
-# distro: poky
-# target: core-image-homeassistant
+machine: qemux86-64
+distro: poky
+target: core-image-homeassistant
 
 repos:
   meta-homeassistant:
