@@ -20,7 +20,15 @@ repos:
   meta-openembedded:
     refspec: dunfell # yocto-3.1.1
 
+  # python3-requests-toolbelt
+  meta-iot-cloud:
+    url: https://github.com/intel-iot-devkit/meta-iot-cloud.git
+    refspec: dunfell
+
 local_conf_header:
   # We want to keep the work and downloads.
   reduce_diskspace: |
     #INHERIT += "rm_work_and_downloads"
+
+  python3-xmltodict: |
+    PREFERRED_VERSION_python3-xmltodict = "0.12.0"
