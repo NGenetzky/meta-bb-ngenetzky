@@ -32,3 +32,6 @@ local_conf_header:
 
   python3-xmltodict: |
     PREFERRED_VERSION_python3-xmltodict = "0.12.0"
+
+  debug-tweaks: |
+    EXTRA_IMAGE_FEATURES += "debug-tweaks"
