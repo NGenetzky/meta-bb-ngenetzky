@@ -1,0 +1,26 @@
+header:
+  version: 8
+  includes:
+    - repo: meta-homeassistant
+      file: kas-master.yml
+    - repo: meta-homeassistant
+      file: kas-qemu.yml
+
+# machine: qemuarm64
+# distro: poky
+# target: core-image-homeassistant
+
+repos:
+  meta-homeassistant:
+    url: "https://gitlab.com/ngenetzky/meta-homeassistant"
+    refspec: "cce36596e1cdcec652ed29b1a1dfdb184b131b82"
+    path: "meta-homeassistant"
+  poky:
+    refspec: yocto-3.1.1
+  meta-openembedded:
+    refspec: dunfell # yocto-3.1.1
+
+local_conf_header:
+  # We want to keep the work and downloads.
+  reduce_diskspace: |
+    #INHERIT += "rm_work_and_downloads"
