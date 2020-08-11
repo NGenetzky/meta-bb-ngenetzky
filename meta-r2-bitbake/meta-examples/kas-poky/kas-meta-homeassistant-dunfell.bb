@@ -9,7 +9,7 @@ SRCREV = "cce36596e1cdcec652ed29b1a1dfdb184b131b82"
 SRC_URI = "file://${PN}.yml"
 
 PV = "2020-07-25"
-PR = "r0"
+PR = "r1"
 
 inherit bitbake_conf
 SRC_URI += "file://site.conf"
