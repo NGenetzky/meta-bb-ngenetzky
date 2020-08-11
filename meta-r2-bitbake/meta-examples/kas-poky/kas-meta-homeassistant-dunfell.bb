@@ -11,6 +11,8 @@ SRC_URI = "file://${PN}.yml"
 PV = "2020-07-25"
 PR = "r1"
 
+BITBAKE_CACHE_KEY_PULL = "yocto-poky-3.1.1"
+
 inherit bitbake_conf
 SRC_URI += "file://site.conf"
 YOCTO_CACHE_DIR ?= "${TOPDIR}/var/cache/yocto-poky-3.1.1"
