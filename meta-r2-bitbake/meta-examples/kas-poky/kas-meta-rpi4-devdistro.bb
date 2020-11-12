@@ -15,3 +15,8 @@ SRC_URI += "file://site.conf"
 YOCTO_CACHE_DIR ?= "${TOPDIR}/var/cache/yocto-poky-2.7"
 BITBAKE_CONF_FILES = "site.conf"
 BITBAKE_CONF_VARS = "YOCTO_CACHE_DIR"
+
+addtask do_kas_build after do_build
+do_kas_build(){
+    kas_exec build "${KAS_FILES}"
+}
