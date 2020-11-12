@@ -33,6 +33,7 @@ yocto_sdk_installer(){
     # -R         Do not relocate executables
     # -D         use set -x to see what is going on
     # -l         list files that will be extracted
+    chmod u+x "${WORKDIR}/${SRCFILENAME}"
     "${WORKDIR}/${SRCFILENAME}" "$@"
 }
 
