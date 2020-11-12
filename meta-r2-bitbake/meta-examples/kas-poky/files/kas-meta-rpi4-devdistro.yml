@@ -34,6 +34,10 @@ repos:
     url: git://git.yoctoproject.org/meta-virtualization
     refspec: warrior # yocto-2.7
 
+  meta-raspberrypi:
+    url: http://github.com/agherzan/meta-raspberrypi.git
+    refspec: "65b95ce742ae973b856a62974d0ec22e2caf03a3" # warrior 2020-10-12
+
 local_conf_header:
   # We want to keep the work and downloads.
   reduce_diskspace: |
