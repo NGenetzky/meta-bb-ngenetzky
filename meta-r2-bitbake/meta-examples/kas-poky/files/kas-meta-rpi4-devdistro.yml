@@ -1,0 +1,44 @@
+header:
+  version: 8
+
+machine: raspberrypi4
+distro: rpi4-devdistro-systemd
+target: core-image-base
+
+repos:
+
+  meta-rpi4-devdistro:
+    url: "http://github.com/salerio-gs/meta-rpi4-devdistro.git"
+    refspec: "34b0081b1b1d12bbc4a083c66c56d594d7c64e55" # 2019-10-16
+
+  poky:
+    url: https://git.yoctoproject.org/git/poky
+    refspec: yocto-2.7 # warrior
+    layers:
+      meta:
+      meta-poky:
+      # meta-yocto-bsp:
+
+  meta-openembedded:
+    url: https://git.openembedded.org/meta-openembedded
+    refspec: warrior # yocto-2.7
+    layers:
+      meta-filesystems:
+      meta-multimedia:
+      meta-networking:
+      meta-oe:
+      meta-python:
+      # meta-perl:
+
+  meta-virtualization: # https://layers.openembedded.org/layerindex/branch/warrior/layer/meta-virtualization/
+    url: git://git.yoctoproject.org/meta-virtualization
+    refspec: warrior # yocto-2.7
+
+local_conf_header:
+  # We want to keep the work and downloads.
+  reduce_diskspace: |
+    # INHERIT += "rm_work_and_downloads"
+    INHERIT += "rm_work"
+
+  debug-tweaks: |
+    EXTRA_IMAGE_FEATURES += "debug-tweaks"
