@@ -8,7 +8,7 @@ target: core-image-base
 repos:
 
   meta-rpi4-devdistro:
-    url: "http://github.com/salerio-gs/meta-rpi4-devdistro.git"
+    url: "http://github.com/ngenetzky/meta-rpi4-devdistro.git"
     refspec: "34b0081b1b1d12bbc4a083c66c56d594d7c64e55" # 2019-10-16
 
   poky:
