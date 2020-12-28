@@ -69,7 +69,9 @@ do_server(){
 
 addtask do_unregister
 do_unregister(){
-    # gitlab_runner_exec unregister --name ""
-    gitlab_runner_exec unregister --all-runners
+    # --name ""
+    gitlab_runner_exec unregister \
+        --config "${S}/config.toml" \
+        --all-runners
 }
 
