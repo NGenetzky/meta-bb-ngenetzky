@@ -39,6 +39,23 @@ variables:
       - build/tmp/deploy/ # DEPLOY_DIR
       - build/bitbake-cookerdaemon.log
 
+  rules: # https://docs.gitlab.com/ee/ci/yaml/README.html#rules
+    # First priority handling direct requests for job
+    - if: '$CI_PIPELINE_SOURCE == "web" && $ARG_JOB_NAME == $CI_JOB_NAME'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "trigger" && $ARG_JOB_NAME == $CI_JOB_NAME'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "schedule"  && $ARG_JOB_NAME == $CI_JOB_NAME'
+      when: always
+
+    # If 'ARG_JOB_NAME' is set then avoid adding any other jobs to pipeline.
+    - if: '$ARG_JOB_NAME'
+      when: never
+
+    # Rather than defaulting to 'never' we will use 'manual' so that it's
+    # eaiser for user to trigger these specific builds
+    - when: manual # This is always a manual build.
+
 simple-r0:
   extends: .bitbake_simple
   script:
@@ -67,6 +84,23 @@ simple-r1:
     paths:
       - build/tmp/deploy/ # DEPLOY_DIR
       - build/bitbake-cookerdaemon.log
+
+  rules: # https://docs.gitlab.com/ee/ci/yaml/README.html#rules
+    # First priority handling direct requests for job
+    - if: '$CI_PIPELINE_SOURCE == "web" && $ARG_JOB_NAME == $CI_JOB_NAME'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "trigger" && $ARG_JOB_NAME == $CI_JOB_NAME'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "schedule"  && $ARG_JOB_NAME == $CI_JOB_NAME'
+      when: always
+
+    # If 'ARG_JOB_NAME' is set then avoid adding any other jobs to pipeline.
+    - if: '$ARG_JOB_NAME'
+      when: never
+
+    # Rather than defaulting to 'never' we will use 'manual' so that it's
+    # eaiser for user to trigger these specific builds
+    - when: manual # This is always a manual build.
 
 r0-bb-examples:
   extends: .kas_simple
