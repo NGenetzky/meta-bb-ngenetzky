@@ -1,5 +1,22 @@
 image: crops/yocto:ubuntu-18.04-base
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"' # Control when both branch pipelines and tag pipelines run.
+      when: never
+    # - if: $CI_COMMIT_TAG
+    #   when: never
+    # - if: $CI_COMMIT_BRANCH
+    #   when: never
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+      when: always
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+      when: always
+    # Default to never running.
+    - when: never
+
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""  # https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
