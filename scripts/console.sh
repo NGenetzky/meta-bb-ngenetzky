@@ -16,7 +16,7 @@ oe_init_build_env(){
     else
         OEROOT="./"
     fi
-    _DEFAULT_OE_INIT="${OEROOT}/oe-init-build-env"
+    _DEFAULT_OE_INIT="${OEROOT}/bb-init-build-env"
 
     OE_INIT_BUILD_ENV="${OE_INIT_BUILD_ENV-"${_DEFAULT_OE_INIT}"}"
     if [ ! -e "$OE_INIT_BUILD_ENV" ]; then
