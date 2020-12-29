@@ -1,6 +1,6 @@
 HOMEPAGE = "https://docs.gitlab.com/runner/"
 PV = "13.7.0"
-PR = "r1"
+PR = "r2"
 
 inherit bb_fetcher
 addtask do_unpack before do_build
@@ -24,23 +24,31 @@ gitlab_runner_exec(){
     "${GITLAB_RUNNER_EXEC}" "$@"
 }
 
-addtask do_register before do_build
+addtask do_register after do_unpack before do_build
 do_register(){
-    # --locked # Lock Runner for current project, defaults to 'true' [$REGISTER_LOCKED]
-    # --registration-token # Runner's registration token [$REGISTRATION_TOKEN]
-    # --name # Runner name (default: "$(hostname)") [$RUNNER_NAME]
-    # --builds-dir # Directory where builds are stored [$RUNNER_BUILDS_DIR]
-    # --cache-dir # Directory where build cache is stored [$RUNNER_CACHE_DIR]
-    # --run-untagged="false" \
+    # WARNING: Docker --cache-dir would be owned by root.
+    # --cache-dir "${B}/cache/"
+
+    # WARNING: Docker --builds-dir would be owned by root.
+    # --docker-volumes "${B}:${B}:rw" \
+    # --builds-dir "${B}"
+
+    name_prefix="$(hostname)"
     gitlab_runner_exec register \
         --non-interactive \
-        --config "${S}/config.toml" \
+        --config "${B}/config.toml" \
         --url "https://gitlab.com/" \
         --registration-token "${GITLAB_TOKEN}" \
-        --access-level="not_protected" \
-        --executor "shell" \
-        --tag-list "shell,${PF}" \
-        --builds-dir "${B}"
+        --run-untagged="true" \
+        --locked='true' \
+        --debug-trace-disabled='true' \
+        --name "${name_prefix}-${PF}" \
+        --tag-list "docker,${name_prefix},${PN},${PF}" \
+        --executor "docker" \
+        --docker-image 'alpine:latest' \
+        --docker-privileged="false" \
+        --docker-disable-cache='true' \
+        --docker-allowed-services ''
 }
 
 inherit bb_build_shell
@@ -63,7 +71,7 @@ do_build(){
 addtask do_server
 do_server(){
     gitlab_runner_exec run \
-        --config "${S}/config.toml" \
+        --config "${B}/config.toml" \
         --working-directory "${B}"
 }
 
@@ -71,7 +79,7 @@ addtask do_unregister
 do_unregister(){
     # --name ""
     gitlab_runner_exec unregister \
-        --config "${S}/config.toml" \
+        --config "${B}/config.toml" \
         --all-runners
 }
 
