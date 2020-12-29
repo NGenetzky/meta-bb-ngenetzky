@@ -21,26 +21,34 @@ gitlab_runner_exec(){
     # --debug                      debug mode [$DEBUG]
     # --log-format value           Choose log format (options: runner, text, json) [$LOG_FORMAT]
     # --log-level value, -l value  Log level (options: debug, info, warn, error, fatal, panic) [$LOG_LEVEL]
-    "${GITLAB_RUNNER_EXEC}" "$@"
+    "${GITLAB_RUNNER_EXEC}" \
+        --log-level 'debug' \
+        --log-format 'text' \
+        "$@"
 }
 
-addtask do_register before do_build
+addtask do_register after do_unpack before do_build
 do_register(){
-    # --locked # Lock Runner for current project, defaults to 'true' [$REGISTER_LOCKED]
-    # --registration-token # Runner's registration token [$REGISTRATION_TOKEN]
-    # --name # Runner name (default: "$(hostname)") [$RUNNER_NAME]
-    # --builds-dir # Directory where builds are stored [$RUNNER_BUILDS_DIR]
-    # --cache-dir # Directory where build cache is stored [$RUNNER_CACHE_DIR]
-    # --run-untagged="false" \
+    install -d \
+        "${B}/builds/" \
+        "${B}/cache/"
+
+    # --run-untagged="false" # TODO
+    name_prefix="$(hostname)"
     gitlab_runner_exec register \
         --non-interactive \
-        --config "${S}/config.toml" \
+        --config "${B}/config.toml" \
         --url "https://gitlab.com/" \
         --registration-token "${GITLAB_TOKEN}" \
         --access-level="not_protected" \
+        --run-untagged="true" \
+        --locked='true' \
+        --debug-trace-disabled='true' \
+        --name "${name_prefix}-${PF}" \
         --executor "shell" \
-        --tag-list "shell,${PF}" \
-        --builds-dir "${B}"
+        --tag-list "shell,${name_prefix},${PN},${PF}" \
+        --builds-dir "${B}/builds/" \
+        --cache-dir "${B}/cache/"
 }
 
 inherit bb_build_shell
@@ -51,7 +59,7 @@ python do_build_shell_scripts(){
     export_func_shell('do_server', d, os.path.join(workdir, 'run.do_server.sh'), workdir)
 }
 
-do_build[dirs] = "${S}"
+do_build[dirs] = "${B}"
 do_build(){
     # Sanity check
     gitlab_runner_exec --version
@@ -63,7 +71,7 @@ do_build(){
 addtask do_server
 do_server(){
     gitlab_runner_exec run \
-        --config "${S}/config.toml" \
+        --config "${B}/config.toml" \
         --working-directory "${B}"
 }
 
@@ -71,7 +79,7 @@ addtask do_unregister
 do_unregister(){
     # --name ""
     gitlab_runner_exec unregister \
-        --config "${S}/config.toml" \
+        --config "${B}/config.toml" \
         --all-runners
 }
 

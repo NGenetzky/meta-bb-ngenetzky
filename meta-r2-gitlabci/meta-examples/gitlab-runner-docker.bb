@@ -33,6 +33,7 @@ do_register(){
     # --docker-volumes "${B}:${B}:rw" \
     # --builds-dir "${B}"
 
+    # --run-untagged="false" # TODO
     name_prefix="$(hostname)"
     gitlab_runner_exec register \
         --non-interactive \
