@@ -1,6 +1,7 @@
 SUMMARY = "Trivial usage of bb_fetch"
 PV = "1.38"
 PR = "r0"
+LICENSE = ""
 
 inherit bb_fetcher
 addtask do_unpack before do_build
