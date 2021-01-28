@@ -116,6 +116,11 @@ r2-bitbake-examples:
   script:
     - kas build 'kas/r2-bitbake-examples.yml'
 
+r2-docker-build:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/ r2-docker-build-examples.yml'
+
 r0-bb-base:
   extends: .kas_simple
   script:
