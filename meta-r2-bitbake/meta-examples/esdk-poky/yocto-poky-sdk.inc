@@ -1,11 +1,11 @@
 
 SUMMARY = "Yocto Project Application Development and the Extensible Software Development Kit (eSDK)"
-HOMEPAGE = "https://www.yoctoproject.org/docs/3.1.1/sdk-manual/sdk-manual.html"
+HOMEPAGE = "https://www.yoctoproject.org/docs/${PV}/sdk-manual/sdk-manual.html"
 
 inherit bb_fetcher
 addtask do_unpack before do_build
 
-YOCTO_SDK_DEST = "${WORKDIR}/poky_sdk/"
+YOCTO_SDK_DEST ??= "${WORKDIR}/poky_sdk/"
 
 yocto_sdk_installer(){
     # Usage: ./poky-glibc-x86_64.sh [-y] [-d <dir>]
