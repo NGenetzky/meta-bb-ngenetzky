@@ -1,31 +1,39 @@
 
 require gh-microsoft-vscode-dev-containers.inc
-PR = "${INC_PR}.0"
+PR = "${INC_PR}.1"
 
-SRC_URI += "\
-    file://Dockerfile;subdir=${PN} \
-"
+SRC_URI += "file://Dockerfile"
 
 DOCKER_REPOSITORY ?= "${PN}"
 DOCKER_TAG ?= "${PV}-${PR}"
 
-exec_docker(){
-    docker "$@"
-}
-
 # Keep source and build separate
 B = "${WORKDIR}/${PN}/"
 
-do_build[dirs] = "${B}"
+do_build[dirs] = "${WORKDIR}"
 do_build(){
-    cp -nTR \
-        "${S}/containers/debian/.devcontainer/" \
-        "${B}/"
-    exec_docker build \
-        --tag "${DOCKER_REPOSITORY}:${DOCKER_TAG}" \
-        --build-arg "VARIANT=debian-10" \
-        './'
+    install -d \
+        "${B}/src/"
 
-    exec_docker image inspect \
-        "${DOCKER_REPOSITORY}:${DOCKER_TAG}"
+    cp -t "${B}/" \
+        "${S}/containers/debian/.devcontainer/devcontainer.json" \
+        "${WORKDIR}/Dockerfile"
+    cp -t "${B}/src/" \
+        "${S}/containers/debian/.devcontainer/library-scripts/common-debian.sh"
+
+    docker_context="${PF}.docker_context.tar.xz"
+    tar -ca \
+        -f "$docker_context" \
+        -C "${B}" \
+        ./
+
+    docker build \
+        --tag "${DOCKER_REPOSITORY}:${DOCKER_TAG}" \
+        --build-arg "INSTALL_ZSH=false" \
+        --build-arg "UPGRADE_PACKAGES=false" \
+        --build-arg "USERNAME=user" \
+        --build-arg "VARIANT=buster" \
+        "${B}"
+
+    docker image inspect "${DOCKER_REPOSITORY}:${DOCKER_TAG}" > "${PF}.docker_image.json"
 }
