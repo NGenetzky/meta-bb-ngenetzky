@@ -1,0 +1,43 @@
+header:
+  version: 8
+  # includes:
+  #   - repo: local
+  #     file: kas-git.yml
+
+machine: qemux86-64
+distro: deby
+# distro: deby-tiny
+target: core-image-minimal
+
+repos:
+  meta-debian:
+    url: https://github.com/meta-debian/meta-debian.git
+    refspec: 1d746eff6256a16809e47c846dd9514ab43a28fb # warrior-on-2021-03-10
+
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    refspec: warrior
+    # refspec: 4edf4eb9cc86fbd4b51240fae527c1b97a7ace74
+    layers:
+      meta:
+      meta-poky:
+
+  # TODOMaybe enable later.
+  # meta-openembedded:
+  #   refspec: warrior
+
+local_conf_header:
+
+  base: |
+    PACKAGE_CLASSES = "package_deb"
+    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    USER_CLASSES = "buildstats image-mklibs image-prelink"
+    PATCHRESOLVE = "noop"
+
+  # We want to keep the work and downloads.
+  reduce_diskspace: |
+    #INHERIT += "rm_work_and_downloads"
+    INHERIT += "rm_work"
+
+  debug-tweaks: |
+    EXTRA_IMAGE_FEATURES += "debug-tweaks"
