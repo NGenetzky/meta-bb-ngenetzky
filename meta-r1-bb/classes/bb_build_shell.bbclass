@@ -16,6 +16,17 @@ def shell_trap_code():
  set -e
  '''
 
+def shell_trap_wrapper(func_name):
+    return '\n'.join([
+        'bb_run_handler() {',
+        '    {} "$@"'.format(func_name),
+        "    ret=$?",
+        "    trap '' 0",
+        "    return $ret",
+        "}",
+        'bb_run_handler "$@"'
+    ])
+
 def export_func_shell(func, d, runfile, cwd=None):
     """Execute a shell function from the metadata
 
@@ -30,21 +41,18 @@ def export_func_shell(func, d, runfile, cwd=None):
         raise bb.fatal('Function ({0}) not defined'.format(func))
     if cwd is None:
         cwd = d.getVarFlag(func, 'dirs')
+
     with open(runfile, 'w') as script:
+        script.write(shell_trap_code())
+
         bb.data.emit_func(func, script, d)
 
         if bb.msg.loggerVerboseLogs:
             script.write("set -x\n")
         if cwd:
             script.write("cd '%s'\n" % cwd)
-        script.write("%s\n" % func)
 
-        script.write('''
- # cleanup
- ret=$?
- trap '' 0
- exit $ret
- ''')
+        script.write(shell_trap_wrapper(func))
 
     os.chmod(runfile, 0o775)
 
