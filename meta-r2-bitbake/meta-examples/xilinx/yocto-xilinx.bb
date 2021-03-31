@@ -1,5 +1,5 @@
 PV = "2020.1"
-PR = "r1"
+PR = "r2"
 inherit bb_fetcher
 addtask do_unpack before do_build
 SRC_URI = "repo://github.com/Xilinx/yocto-manifests.git;protocol=git;branch=rel-v2020.1"
@@ -13,6 +13,12 @@ oe_init_build_env_prepend(){
     export TEMPLATECONF="${S}/sources/meta-petalinux/conf"
     export PATH="$PATH:${S}/scripts"
 }
+
+inherit bitbake_conf
+SRC_URI += "file://site.conf"
+YOCTO_CACHE_DIR ?= "${TOPDIR}/var/cache/yocto/"
+BITBAKE_CONF_FILES = "site.conf"
+BITBAKE_CONF_VARS = "YOCTO_CACHE_DIR"
 
 bitbake_conf_auto_generate(){
     # NOTE: The petalinux TEMPLATECONF has invalid MACHINE in v2020.1
