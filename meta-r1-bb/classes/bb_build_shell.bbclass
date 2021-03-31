@@ -1,3 +1,21 @@
+def shell_trap_code():
+    return '''#!/bin/sh\n
+ # Emit a useful diagnostic if something fails:
+ bb_exit_handler() {
+     ret=$?
+     case $ret in
+     0)  ;;
+     *)  case $BASH_VERSION in
+         "") echo "WARNING: exit code $ret from a shell command.";;
+         *)  echo "WARNING: ${BASH_SOURCE[0]}:${BASH_LINENO[0]} exit $ret from '$BASH_COMMAND'";;
+         esac
+         exit $ret
+     esac
+ }
+ trap 'bb_exit_handler' 0
+ set -e
+ '''
+
 def export_func_shell(func, d, runfile, cwd=None):
     """Execute a shell function from the metadata
 
@@ -20,6 +38,15 @@ def export_func_shell(func, d, runfile, cwd=None):
         if cwd:
             script.write("cd '%s'\n" % cwd)
         script.write("%s\n" % func)
+
+        script.write('''
+ # cleanup
+ ret=$?
+ trap '' 0
+ exit $ret
+ ''')
+
+    os.chmod(runfile, 0o775)
 
 do_build_shell_scripts[nostamp] = "1"
 addtask do_build_shell_scripts
