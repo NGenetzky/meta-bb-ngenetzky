@@ -1,0 +1,15 @@
+header:
+  version: 8
+# target: poky-glibc-x86-64-core-image-sato-aarch64-qemuarm64-toolchain
+# target: poky-glibc-x86-64-core-image-sato-aarch64-qemuarm64-toolchain-ext
+target: poky-glibc-x86-64-core-image-sato-core2-64-qemux86-64-toolchain-ext
+repos:
+  meta-bb-ngenetzky:
+    # url: "https://gitlab.com/ngenetzky/meta-bb-ngenetzky.git"
+    # refspec: "e18b98e2cd072dac11efb93cfc37bccc251641ac"
+    # path: "layers/meta-bb-ngenetzky/"
+    layers:
+      meta-r0-base:
+      meta-r1-bb:
+      meta-r2-bitbake:
+      meta-r2-bitbake/meta-examples:
