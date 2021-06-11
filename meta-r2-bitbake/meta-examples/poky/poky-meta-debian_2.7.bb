@@ -18,5 +18,6 @@ BITBAKE_OE_ROOT = "${WORKDIR}/${PN}-${PV}/"
 do_build[dirs] = "${B} ${WORKDIR}"
 do_build(){
     oe_init_build_env
+    bitbake-layers add-layer ../../meta-debian
     bitbake-layers show-recipes > recipes.log
 }
