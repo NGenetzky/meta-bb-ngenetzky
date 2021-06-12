@@ -31,6 +31,13 @@ python do_build_shell_scripts(){
     export_func_shell('do_bitbake_build', d, os.path.join(workdir, 'do_bitbake_build.sh'), workdir)
 }
 
+do_build[dirs] = "${B} ${WORKDIR}"
+do_build(){
+    oe_init_build_env
+    bitbake-layers add-layer ../meta-debian
+    bitbake-layers show-recipes > recipes.log
+}
+
 addtask do_bitbake_build
 do_bitbake_build[dirs] = "${B}"
 do_bitbake_build(){
