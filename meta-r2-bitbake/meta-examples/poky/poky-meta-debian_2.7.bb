@@ -1,4 +1,4 @@
-PR = "r1"
+PR = "r2"
 
 inherit bb_fetcher
 addtask do_unpack before do_build
@@ -16,6 +16,11 @@ SRC_URI += "file://site.conf"
 
 inherit bitbake_oe
 BITBAKE_OE_ROOT = "${WORKDIR}/${PN}-${PV}/"
+
+inherit bitbake_conf
+BITBAKE_CONF_FILES = "site.conf"
+BITBAKE_CONF_VARS = "YOCTO_CACHE_DIR"
+YOCTO_CACHE_DIR = "${TOPDIR}/var/cache/yocto/"
 
 inherit bb_build_shell
 do_build_shell_scripts[nostamp] = "1"
