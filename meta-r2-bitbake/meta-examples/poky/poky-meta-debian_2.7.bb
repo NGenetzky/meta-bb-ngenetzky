@@ -1,3 +1,5 @@
+PR = "r1"
+
 inherit bb_fetcher
 addtask do_unpack before do_build
 
@@ -15,9 +17,18 @@ SRC_URI += "file://site.conf"
 inherit bitbake_oe
 BITBAKE_OE_ROOT = "${WORKDIR}/${PN}-${PV}/"
 
-do_build[dirs] = "${B} ${WORKDIR}"
-do_build(){
+inherit bb_build_shell
+do_build_shell_scripts[nostamp] = "1"
+addtask do_build_shell_scripts before do_build
+python do_build_shell_scripts(){
+    workdir = d.getVar('WORKDIR', expand=True)
+    export_func_shell('oe_init_build_env', d, os.path.join(workdir, 'oe_init_build_env.sh'), workdir)
+    export_func_shell('do_bitbake_build', d, os.path.join(workdir, 'do_bitbake_build.sh'), workdir)
+}
+
+addtask do_bitbake_build
+do_bitbake_build[dirs] = "${B}"
+do_bitbake_build(){
     oe_init_build_env
-    bitbake-layers add-layer ../../meta-debian
-    bitbake-layers show-recipes > recipes.log
+    bitbake core-image-minimal
 }
