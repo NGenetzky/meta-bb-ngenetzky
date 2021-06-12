@@ -15,7 +15,7 @@ SRCREV_debian_warrior = "a02e7a8bc7dccdf08fa8f3d2a4b9705a271a1215"
 SRC_URI += "file://site.conf"
 
 inherit bitbake_oe
-BITBAKE_OE_ROOT = "${WORKDIR}/${PN}-${PV}/"
+B = "${WORKDIR}/build/"
 
 inherit bitbake_conf
 BITBAKE_CONF_FILES = "site.conf"
