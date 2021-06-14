@@ -14,9 +14,12 @@ oe_init_build_env_prepend(){
     export PATH="$PATH:${S}/scripts"
 }
 
+inherit bitbake_cache
+BITBAKE_CACHE_KEY = "yocto"
+
 inherit bitbake_conf
 SRC_URI += "file://site.conf"
-YOCTO_CACHE_DIR ?= "${TOPDIR}/var/cache/yocto/"
+YOCTO_CACHE_DIR ?= "${TOPDIR}/var/cache/${BITBAKE_CACHE_KEY}/"
 BITBAKE_CONF_FILES = "site.conf"
 BITBAKE_CONF_VARS = "YOCTO_CACHE_DIR"
 
