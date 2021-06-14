@@ -135,3 +135,8 @@ r1-git-bb-build-shell:
   extends: .kas_simple
   script:
     - kas build 'kas/r1-git-bb-build-shell.yml'
+
+r2-venv:
+  extends: .kas_simple
+  script:
+    - kas build 'kas/r2-venv.yml'
