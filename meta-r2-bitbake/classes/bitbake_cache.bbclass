@@ -9,7 +9,7 @@ BITBAKE_CACHE_KEY_PUSH ??= "${BITBAKE_CACHE_KEY}"
 # a=archive, i=itemize, v=verbose, n=dry-run
 BITBAKE_CACHE_RSYNC_OPTS ??= "-a"
 BITBAKE_CACHE_RSYNC_EXTRAS ??= "--stats"
-
+# --delete                delete extraneous files from dest dirs
 
 do_bitbake_cache_push[nostamp] = "1"
 do_bitbake_cache_push[dirs] = "\
@@ -37,7 +37,7 @@ do_bitbake_cache_push(){
     if [ -d "$d_downloads" ] ; then
         bbnote "bitbake_cache: push '${BITBAKE_CACHE_KEY_PUSH}/downloads'"
         # NOTE: Ensure SRC has trailing slash.
-        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} --delete \
+        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} \
             "${d_downloads}/" \
             "${d_cache}/downloads"
     fi
@@ -45,7 +45,7 @@ do_bitbake_cache_push(){
     if [ -d "$d_sstate" ] ; then
         bbnote "bitbake_cache: push '${BITBAKE_CACHE_KEY_PUSH}/sstate-cache'"
         # NOTE: Ensure SRC has trailing slash.
-        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} --delete \
+        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} \
             "${d_sstate}/" \
             "${d_cache}/sstate-cache"
     fi
@@ -78,7 +78,7 @@ do_bitbake_cache_pull(){
         bbnote "bitbake_cache: pull '${BITBAKE_CACHE_KEY_PULL}/downloads'"
         install -d "${d_downloads}"
         # NOTE: Ensure SRC has trailing slash.
-        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} --delete \
+        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} \
             "${d_cache}/downloads/" \
             "${d_downloads}"
     fi
@@ -87,7 +87,7 @@ do_bitbake_cache_pull(){
         bbnote "bitbake_cache: pull '${BITBAKE_CACHE_KEY_PULL}/sstate-cache'"
         install -d "${d_sstate}"
         # NOTE: Ensure SRC has trailing slash.
-        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} --delete \
+        rsync "${BITBAKE_CACHE_RSYNC_OPTS}" ${BITBAKE_CACHE_RSYNC_EXTRAS} \
             "${d_cache}/sstate-cache/" \
             "${d_sstate}"
     fi
