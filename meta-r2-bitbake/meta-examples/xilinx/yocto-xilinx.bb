@@ -15,17 +15,22 @@ oe_init_build_env_prepend(){
 }
 
 inherit bitbake_cache
+
 BITBAKE_CACHE_KEY = "yocto"
 
 inherit bitbake_conf
+addtask do_bitbake_conf_auto_generate before do_build
 SRC_URI += "file://site.conf"
 YOCTO_CACHE_DIR ?= "${TOPDIR}/var/cache/${BITBAKE_CACHE_KEY}/"
 BITBAKE_CONF_FILES = "site.conf"
 BITBAKE_CONF_VARS = "YOCTO_CACHE_DIR"
 
-bitbake_conf_auto_generate(){
+bitbake_conf_auto(){
     # NOTE: The petalinux TEMPLATECONF has invalid MACHINE in v2020.1
     echo 'MACHINE ?= "qemu-zynq7"'
+    echo 'INHERIT += "rm_work"'
+    printf 'DL_DIR = "%s"\n' "${YOCTO_DOWNLOADS}"
+    printf 'SSTATE_DIR = "%s"\n' "${YOCTO_STATE_CACHE}"
 }
 
 inherit bb_build_shell
@@ -40,9 +45,6 @@ python do_build_shell_scripts(){
 B = "${WORKDIR}/build/"
 do_build[dirs] = "${B} ${WORKDIR}"
 do_build(){
-    mkdir -p "${B}/conf/"
-    bitbake_conf_auto_generate > "${B}/conf/auto.conf"
-
     oe_init_build_env
     bitbake-layers show-recipes > recipes.log
 }
