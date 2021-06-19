@@ -2,7 +2,7 @@ SUMMARY = "Balena support for QEMU boards "
 HOMEPAGE = "https://github.com/balena-os/balena-qemu"
 LICENSE = "APACHE-2.0"
 
-PV = "2.29.2+rev1"
+PV = "2.29.2.1"
 PR = "r0"
 
 inherit bb_fetcher
