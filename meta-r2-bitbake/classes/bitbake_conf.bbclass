@@ -37,3 +37,12 @@ python do_bitbake_conf_template(){
             conf.write(contents)
 }
 
+bitbake_conf_auto(){
+    echo ''
+}
+
+do_bitbake_conf_auto_generate[nostamp] = "1"
+do_bitbake_conf_auto_generate[dirs] = "${BITBAKE_CONF_BUILD} ${BITBAKE_CONF_TEMPLATE}"
+do_bitbake_conf_auto_generate(){
+    bitbake_conf_auto > "${B}/conf/auto.conf"
+}
