@@ -9,6 +9,24 @@ SRC_URI = "git://github.com/openembedded/bitbake.git"
 
 S = "${WORKDIR}/git"
 
+verify_fetch(){
+    # NOTE: This function is imperfect, various variables could be changed.
+    if [ -d "${DL_DIR}/git2/github.com.openembedded.bitbake.git" ]; then
+        return 0
+    elif [ -d "${TOPDIR}/tmp/downloads/git2/github.com.openembedded.bitbake.git" ]; then
+        return 0
+    fi
+    return 1
+}
+
 do_build(){
-    [ -f ${S}/bin/bitbake ] || exit 1
+    if ! verify_fetch ; then
+        echo "FATAL:" 'do_fetch failed'
+        exit 1
+    fi
+
+    if [ ! -x "${S}/bin/bitbake" ]; then
+        echo "FATAL:" 'do_unpack failed'
+        exit 1
+    fi
 }
