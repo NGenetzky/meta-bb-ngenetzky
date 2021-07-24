@@ -1,0 +1,7 @@
+BBPATH := "${TOPDIR}"
+BBFILES ?= ""
+BBLAYERS_DIR ??= "${TOPDIR}/layers/"
+BBLAYERS = "\
+ ${BBLAYERS_DIR}/meta-bb-ngenetzky/meta-r0-minimal/\
+ ${BBLAYERS_DIR}/meta-bb-ngenetzky/test/r1-test-minimal/meta-r1-test-minimal/\
+ "
