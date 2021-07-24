@@ -3,3 +3,16 @@
 
 # Build Workspace
 /build/
+
+# bitbake TOPDIR/
+*.sock
+bitbake-cookerdaemon.log
+
+# bitbake TOPDIR/cache/
+bb_persist_data.sqlite3
+bb_codeparser.dat
+bb_cache.dat*
+local_file_checksum_cache.dat
+
+# bitbake WORKDIR/temp/
+**/temp/*
