@@ -65,6 +65,11 @@ simple-r1:
   script:
     - ci/r1-simple.sh
 
+r1-test-minimal:
+  extends: .bitbake_simple
+  script:
+    - ci/r1-test-minimal.sh
+
 .kas_simple: &kas_simple_template
   image: kasproject/kas:2.1.1
   stage: build
