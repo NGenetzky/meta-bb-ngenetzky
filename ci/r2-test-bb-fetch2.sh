@@ -6,6 +6,8 @@ source ci/gitlab_console_bitbake.sh
 # Posix Strict Mode
 set -eu
 
+mkdir -p conf/
+
 # NOTE: All variables are escaped so that they are expanded by bitbake.
 cat << EOF > 'conf/bblayers.conf'
 BBPATH := ""
@@ -27,3 +29,4 @@ bitbake-layers show-layers
 bitbake-layers show-recipes
 
 bitbake r2-test-fetch2-git
+bitbake r2-test-fetch2-http
