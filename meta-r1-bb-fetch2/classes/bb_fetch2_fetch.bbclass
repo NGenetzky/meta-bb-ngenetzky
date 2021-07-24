@@ -3,7 +3,7 @@ DL_DIR ??= "${TMPDIR}/downloads"
 do_fetch[dirs] = "${DL_DIR}"
 do_fetch[file-checksums] = "${@bb.fetch.get_checksum_file_list(d)}"
 do_fetch[vardeps] += "SRCREV"
-python bb_fetch2_do_fetch() {
+python bb_fetch2_fetch_do_fetch() {
 
     src_uri = (d.getVar('SRC_URI') or "").split()
     if len(src_uri) == 0:

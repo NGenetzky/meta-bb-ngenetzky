@@ -7,7 +7,7 @@ python () {
     else:
         d.setVarFlag('do_unpack', 'cleandirs', os.path.join('${S}', 'patches'))
 }
-python bb_fetch2_do_unpack() {
+python bb_fetch2_unpack_do_unpack() {
     src_uri = (d.getVar('SRC_URI') or "").split()
     if len(src_uri) == 0:
         return
