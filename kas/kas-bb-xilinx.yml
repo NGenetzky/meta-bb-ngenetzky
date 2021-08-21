@@ -1,0 +1,17 @@
+header:
+  version: 8
+
+target: example-bitbake-fetch
+
+env:
+  SHELL: bash
+
+repos:
+  meta-bb-project-base:
+    url: "https://gitlab.com/ngenetzky/meta-bb-project-base.git"
+    refspec: "488de59a971b769cbe059e041c495600311abf8b"
+    path: "build/layers/meta-bb-project-base/"
+    layers:
+      meta-r0-base:
+      meta-r1-bb:
+      meta-r1-bb/meta-examples:

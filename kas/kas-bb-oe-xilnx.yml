@@ -1,0 +1,41 @@
+header:
+  version: 8
+
+distro: nodistro
+target: world
+
+bblayers_conf_header:
+  00_header: |
+    # kas-bb-oe
+  01_standard: |
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+local_conf_header:
+  00_header: |
+    # kas-bb-oe
+
+repos:
+  # sources/meta-bb/meta-bb-ngenetzky:
+  #   url: git@github.com:NGenetzky/meta-bb-ngenetzky.git
+  #   layers:
+  #     # meta-r0-base: # NOTE: This is alternative to using poky+oe
+  #     meta-r1-bb:
+  #     meta-r1-bb/meta-examples:
+
+  sources/meta-bb/meta:
+    url: "https://git.openembedded.org/openembedded-core"
+    # refspec: dbce6baec68d7658453b8c44159e1d1fef746151
+    refspec: 2e38893b376e2a9f4a7c74a1b5b771696709a6d9 # xilinx/poky:2021.2
+    layers:
+      meta:
+
+  sources/meta-bb/bitbake:
+    url: "https://git.openembedded.org/bitbake"
+    refspec: 39888b750df12478e8bdea6727cca112dce1df85
+    # NOTE: Two options here: patch or excluded.
+    # patches:
+    #   0001-conf-Add-empty-layer.conf-to-bitbake:
+    #     repo: "meta-bb-ngenetzky"
+    #     path: "kas/patches/0001-conf-Add-empty-layer.conf-to-bitbake.patch"
+    layers:
+      .: excluded # WARNING: This requires pretty new 'kas'
