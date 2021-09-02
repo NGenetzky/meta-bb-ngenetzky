@@ -1,0 +1,44 @@
+header:
+  version: 8
+
+distro: nodistro
+# target: world
+target: example-bitbake-build-shell
+
+repos:
+
+  meta-bb-ngenetzky:
+    layers:
+      meta-r0-base:
+      meta-r1-bb:
+      meta-r1-bb/meta-examples:
+
+  openembedded-core:
+    url: "http://git.openembedded.org/openembedded-core"
+    refspec: dbce6baec68d7658453b8c44159e1d1fef746151
+    layers:
+      meta: excluded # WARNING: This requires pretty new 'kas'
+
+  bitbake:
+    url: "http://git.openembedded.org/bitbake"
+    refspec: 39888b750df12478e8bdea6727cca112dce1df85
+    # patches:
+    #   0001-conf-Add-empty-layer.conf-to-bitbake:
+    #     repo: "meta-bb-ngenetzky"
+    #     path: "kas/patches/0001-conf-Add-empty-layer.conf-to-bitbake.patch"
+    layers:
+      .: excluded # WARNING: This requires pretty new 'kas'
+
+bblayers_conf_header:
+
+  00_header: |
+    # kas-bb-oe
+
+  01_standard: |
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+
+local_conf_header:
+
+  00_header: |
+    # kas-bb-oe

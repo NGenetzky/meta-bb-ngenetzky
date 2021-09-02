@@ -1,17 +1,11 @@
 header:
   version: 8
-
+  includes:
+    - sources/ngenetzky/r1-bb.yml
 target: example-bitbake-build-shell
-
 env:
   SHELL: bash
-
 repos:
   meta-bb-project-base:
-    url: "https://gitlab.com/ngenetzky/meta-bb-project-base.git"
-    refspec: "59cf5e1fa772e4021a8585ce0462863578f288e4"
-    path: "build/layers/meta-bb-project-base/"
     layers:
-      meta-r0-base:
-      meta-r1-bb:
       meta-r1-bb/meta-examples:

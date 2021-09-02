@@ -76,10 +76,10 @@ oe_init_build_env(){
     # elif [ -n "$ZSH_NAME" ]; then
     #     THIS_SCRIPT=$0
     else
-        THIS_SCRIPT="$(pwd)/oe-init-build-env"
+        THIS_SCRIPT="$(pwd)/bb-init-build-env"
         if [ ! -e "$THIS_SCRIPT" ]; then
             echo "Error: $THIS_SCRIPT doesn't exist!" >&2
-            echo "Please run this script in oe-init-build-env's directory." >&2
+            echo "Please run this script in bb-init-build-env's directory." >&2
             return 1
         fi
     fi

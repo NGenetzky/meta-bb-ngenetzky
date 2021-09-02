@@ -1,15 +1,12 @@
 header:
   version: 8
-
+  includes:
+    - sources/ngenetzky/r1-bb.yml
 target: world
-
 env:
   SHELL: bash
-
 repos:
   local:
     layers:
-      meta-r0-base:
-      meta-r1-bb:
       meta-r2-docker-build:
       meta-r2-docker-build/meta-examples:

@@ -1,0 +1,16 @@
+From f6992b4cb573d9c444ac8f934970636571fd7972 Mon Sep 17 00:00:00 2001
+From: Nathan Genetzky <nathan@genetzky.us>
+Date: Tue, 29 Dec 2020 10:15:55 -0600
+Subject: [PATCH] conf: Add empty 'layer.conf' to bitbake
+
+---
+ conf/layer.conf | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 conf/layer.conf
+
+diff --git a/conf/layer.conf b/conf/layer.conf
+new file mode 100644
+index 00000000..e69de29b
+-- 
+2.26.2
+
