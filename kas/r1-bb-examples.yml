@@ -1,12 +1,15 @@
 header:
   version: 8
   includes:
-    - sources/ngenetzky/r0-base.yml
+    # NOTE: This should be compatible with 'r0-base' or 'oe-bitbake'
+    # - sources/ngenetzky/r0-base.yml
+    - sources/openembedded/oe-init-bitbake.yml
 target: world
 env:
   SHELL: bash
 repos:
   local:
     layers:
+      meta-r0-base:
       meta-r1-bb:
       meta-r1-bb/meta-examples:
