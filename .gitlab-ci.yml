@@ -124,7 +124,7 @@ r2-bitbake-examples:
 r2-docker-build:
   extends: .kas_simple
   script:
-    - kas build 'kas/ r2-docker-build-examples.yml'
+    - kas build 'kas/r2-docker-build-examples.yml'
 
 r0-bb-base:
   extends: .kas_simple
