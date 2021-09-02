@@ -71,7 +71,8 @@ r1-test-minimal:
     - ci/r1-test-minimal.sh
 
 .kas_simple: &kas_simple_template
-  image: kasproject/kas:2.1.1
+  # image: kasproject/kas:2.1.1 # WARN: Doesn't handle 'excluded' layers.
+  image: kasproject/kas:2.2
   stage: build
   script:
     - kas build 'kas/r1-bb-examples.yml'
