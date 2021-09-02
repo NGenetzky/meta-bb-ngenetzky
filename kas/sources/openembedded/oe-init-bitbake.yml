@@ -4,10 +4,12 @@ repos:
   openembedded-core:
     url: "http://git.openembedded.org/openembedded-core"
     refspec: dbce6baec68d7658453b8c44159e1d1fef746151
+    path: "sources/openembedded-core/"
     layers:
       meta: excluded # WARNING: This requires pretty new 'kas'
   bitbake:
     url: "http://git.openembedded.org/bitbake"
     refspec: 39888b750df12478e8bdea6727cca112dce1df85
+    path: "sources/bitbake/"
     layers:
       .: excluded # WARNING: This requires pretty new 'kas'
