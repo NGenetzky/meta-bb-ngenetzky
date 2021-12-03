@@ -33,8 +33,8 @@ bblayers_conf_header:
   # TODO: include local.conf in bitbake.conf
   02_oe_meta_minimal: |
     # custom vars to help set oe-core vars
-    BB_ARCH ??= "allarch"
-    # BB_ARCH ??= "x86_64"
+    # BB_ARCH ??= "allarch"
+    BB_ARCH ??= "x86_64"
     BB_OS ??= "linux"
 
     # openembedded-core
@@ -66,6 +66,7 @@ bblayers_conf_header:
 
     # TODO # Unable to determine bit size for architecture 'x86_64'
     # Avoided by using "allarch" instead.
+    # NOTE: I must have added something later that fixed it.
 
     # TODO # Exception: ModuleNotFoundError: No module named 'oe'
     # NOTE: Avoided by manually setting PYTHONPATH env var:
