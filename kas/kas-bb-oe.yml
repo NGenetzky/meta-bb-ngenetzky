@@ -17,7 +17,8 @@ repos:
     url: "http://git.openembedded.org/openembedded-core"
     refspec: dbce6baec68d7658453b8c44159e1d1fef746151
     layers:
-      meta: excluded # WARNING: This requires pretty new 'kas'
+      meta:
+      # meta: excluded # WARNING: This requires pretty new 'kas'
 
   bitbake:
     url: "http://git.openembedded.org/bitbake"
