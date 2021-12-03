@@ -25,9 +25,46 @@ bblayers_conf_header:
     BBPATH = "${TOPDIR}"
     BBFILES ?= ""
 
+
   02_oe_meta_bbmask: |
     # To disable all of the recipes from meta layer
     BBMASK = "meta/"
+
+  # TODO: Why do I need this in bblayers??
+  02_oe_meta_minimal: |
+    # custom vars to help set oe-core vars
+    BB_ARCH ??= "allarch"
+    # BB_ARCH ??= "x86_64"
+    BB_OS ??= "linux"
+
+    # openembedded-core
+    BUILD_ARCH ??= "${BB_ARCH}"
+    BUILD_OS ??= "${BB_OS}"
+    CC ??= "gcc"
+    CXX ??= "gxx"
+    DISTRO_FEATURES ??= ""
+    DISTRO_FEATURES_NATIVE ??= ""
+    DISTRO_FEATURES_NATIVESDK ??= ""
+    HOST_ARCH ??= "${BB_ARCH}"
+    HOST_OS ??= "${BB_OS}"
+    SDK_ARCH ??= "${BB_ARCH}"
+    TUNE_CCARGS ??= ""
+
+    # To disable all of the recipes:
+    # BBMASK = "meta/"
+
+    # WARN: pslash expands variables without sane defaults
+    PACKAGES ??= ""
+    SPLASH_IMAGES ??= ""
+    # BBMASK = "meta/recipes-core/psplash/"
+    BBMASK = "meta/recipes-devtools/intltool/"
+
+    # TODO # Unable to determine bit size for architecture 'x86_64'
+    # Avoided by using "allarch" instead.
+
+    # TODO # Exception: ModuleNotFoundError: No module named 'oe'
+    # NOTE: Avoided by manually setting PYTHONPATH env var:
+    # export PYTHONPATH="${OEBASE}/meta/lib:${PYTHONPATH-}"
 
 local_conf_header:
   00_header: |
