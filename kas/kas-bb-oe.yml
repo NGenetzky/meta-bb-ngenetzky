@@ -39,6 +39,10 @@ bblayers_conf_header:
     BBPATH = "${TOPDIR}"
     BBFILES ?= ""
 
+  02_oe_meta_bbmask: |
+    # To disable all of the recipes from meta layer
+    BBMASK = "meta/"
+
 local_conf_header:
 
   00_header: |
