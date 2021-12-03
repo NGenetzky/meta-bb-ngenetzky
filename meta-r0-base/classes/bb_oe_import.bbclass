@@ -2,7 +2,7 @@ OE_EXTRA_IMPORTS ?= ""
 
 OE_IMPORTS[type] = "list"
 OE_IMPORTS ??= "os sys time ${OE_EXTRA_IMPORTS}"
-OE_IMPORTS += "os sys time oe.path oe.utils oe.types oe.package oe.packagegroup oe.sstatesig oe.lsb oe.cachedpath oe.license ${OE_EXTRA_IMPORTS}"
+# OE_IMPORTS += "os sys time oe.path oe.utils oe.types oe.package oe.packagegroup oe.sstatesig oe.lsb oe.cachedpath oe.license ${OE_EXTRA_IMPORTS}"
 
 def oe_import(d):
     import sys
@@ -17,8 +17,11 @@ def oe_import(d):
         else:
             __builtins__[name] = value
 
-    import oe.data
-    for toimport in oe.data.typed_value("OE_IMPORTS", d):
+    # import oe.data
+    # oe_imports = oe.data.typed_value("OE_IMPORTS", d)
+    # NOTE: Avoiding dependency on oe module
+    oe_imports = (d.getVar("OE_IMPORTS", True) or '').split()
+    for toimport in oe_imports:
         try:
             imported = __import__(toimport)
             inject(toimport.split(".", 1)[0], imported)
