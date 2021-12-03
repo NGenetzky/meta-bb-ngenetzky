@@ -93,9 +93,16 @@ bblayers_conf_header:
     # TODO: Inherit utils.bbclass for python functions:
     # all_multilib_tune_values, multilib_pkg_extend
     BBMASK += "meta/recipes-core/meta/meta-environment-extsdk.bb"
-    BBMASK += "meta/recipes-core/packagegroups/packagegroup-.*-cross-canadian.bb"
+    BBMASK += "meta/recipes-core/packagegroups/packagegroup-.*cross-canadian.bb"
     BBMASK += "meta/recipes-devtools/.*/.*cross-canadian.*.bb"
-    BBMASK += "meta/recipes-core/images/build-appliance-image.*.bb"
+    BBMASK += "meta/recipes-core/meta/meta-environment.bb"
+    BBMASK += "meta/recipes-core/meta/meta-go-toolchain.bb"
+    BBMASK += "meta/recipes-core/meta/meta-toolchain.bb"
+    BBMASK += "meta/recipes-core/images/"
+    BBMASK += "meta/recipes-extended/images/"
+    BBMASK += "meta/recipes-sato/images/"
+    BBMASK += "meta/recipes-core/ovmf/ovmf-shell-image.bb"
+    BBMASK += "meta/recipes-graphics/images/"
 
     # BBMASK += "meta/recipes-extended/packagegroups/packagegroup-core-full-cmdline.bb"
     MLPREFIX ??= ""
@@ -116,6 +123,7 @@ bblayers_conf_header:
     BBMASK += "meta/recipes-kernel/linux/kernel-devsrc.bb"
 
     MULTILIB_VARIANTS ??= "nativesdk"
+    RPROVIDES ??= "${PN}"
 
 local_conf_header:
   00_header: |
