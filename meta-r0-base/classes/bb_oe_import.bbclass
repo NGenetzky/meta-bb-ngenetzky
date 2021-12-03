@@ -2,7 +2,7 @@ OE_EXTRA_IMPORTS ?= ""
 
 OE_IMPORTS[type] = "list"
 OE_IMPORTS ??= "os sys time ${OE_EXTRA_IMPORTS}"
-# OE_IMPORTS += "os sys time oe.path oe.utils oe.types oe.package oe.packagegroup oe.sstatesig oe.lsb oe.cachedpath oe.license ${OE_EXTRA_IMPORTS}"
+OE_IMPORTS += "os sys time oe.path oe.utils oe.types oe.package oe.packagegroup oe.sstatesig oe.lsb oe.cachedpath oe.license ${OE_EXTRA_IMPORTS}"
 
 def oe_import(d):
     import sys
