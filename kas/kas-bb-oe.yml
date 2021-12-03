@@ -25,12 +25,12 @@ bblayers_conf_header:
     BBPATH = "${TOPDIR}"
     BBFILES ?= ""
 
-
   02_oe_meta_bbmask: |
     # To disable all of the recipes from meta layer
     BBMASK = "meta/"
 
-  # TODO: Why do I need this in bblayers??
+  # TODO: Why do I need this in bblayers?? Because local.conf is ignored.
+  # TODO: include local.conf in bitbake.conf
   02_oe_meta_minimal: |
     # custom vars to help set oe-core vars
     BB_ARCH ??= "allarch"
@@ -48,6 +48,11 @@ bblayers_conf_header:
     HOST_ARCH ??= "${BB_ARCH}"
     HOST_OS ??= "${BB_OS}"
     SDK_ARCH ??= "${BB_ARCH}"
+    SDK_OS ??= "${BB_OS}"
+    TARGET_ARCH ??= "${BUILD_ARCH}"
+    TARGET_OS ??= "${BUILD_OS}"
+    TARGET_SYS ??= "${TARGET_ARCH}-${TARGET_OS}"
+    TARGET_VENDOR ??= ""
     TUNE_CCARGS ??= ""
 
     # To disable all of the recipes:
@@ -65,6 +70,52 @@ bblayers_conf_header:
     # TODO # Exception: ModuleNotFoundError: No module named 'oe'
     # NOTE: Avoided by manually setting PYTHONPATH env var:
     # export PYTHONPATH="${OEBASE}/meta/lib:${PYTHONPATH-}"
+
+  03_oe_meta_parse_bbclasses: |
+    # NOTE: vars required to parse the classes in 'meta' layer
+
+    # openembedded-core/meta/classes/populate_sdk_base.bbclass:32
+    # meta/classes/image.bbclass:18
+    IMAGE_PKGTYPE ??= "ipk"
+
+    FILESOVERRIDES ??= "${MACHINE}:${DISTRO}"
+
+  04_oe_meta_parse_recipes: |
+    # NOTE: vars required to parse the recipes in 'meta' layer
+
+    IMAGE_FSTYPES ??= "tar.gz"
+    BB_ARCH ??= "allarch"
+    PACKAGE_ARCHS ??= "${BB_ARCH}"
+    FILESOVERRIDES ??= ""
+    # NOTE: This might be a better default:
+    # FILESOVERRIDES ??= "${MACHINE}:${DISTRO}"
+
+    # TODO: Inherit utils.bbclass for python functions:
+    # all_multilib_tune_values, multilib_pkg_extend
+    BBMASK += "meta/recipes-core/meta/meta-environment-extsdk.bb"
+    BBMASK += "meta/recipes-core/packagegroups/packagegroup-.*-cross-canadian.bb"
+    BBMASK += "meta/recipes-devtools/.*/.*cross-canadian.*.bb"
+    BBMASK += "meta/recipes-core/images/build-appliance-image.*.bb"
+
+    # BBMASK += "meta/recipes-extended/packagegroups/packagegroup-core-full-cmdline.bb"
+    MLPREFIX ??= ""
+
+    # BBMASK += "meta/recipes-devtools/vala/"
+    BPN ??= "${PN}"
+
+    UBOOT_CONFIG ??= ""
+    UBOOT_CONFIG[allarch] ??= ""
+
+    # TODO: docdir must contain prefix as its prefix
+    BBMASK += "meta/recipes-devtools/cmake/"
+
+    MACHINE_FEATURES ??= ""
+    DISTRO_FEATURES ??= ""
+
+    # TODO: cannot map 'allarch' to a linux kernel architecture
+    BBMASK += "meta/recipes-kernel/linux/kernel-devsrc.bb"
+
+    MULTILIB_VARIANTS ??= "nativesdk"
 
 local_conf_header:
   00_header: |
