@@ -11,7 +11,7 @@ PR = "r0"
 inherit bb_fetcher
 addtask do_unpack before do_build
 SRCREV = "88f40ab7329b09e04a6896e311e2acc911e98bae"
-SRC_URI = "git://github.com/ngenetzky/meta-bb-ngenetzky.git;destsuffix=${PN}-${PV}/"
+SRC_URI = "git://github.com/ngenetzky/meta-bb-ngenetzky.git;destsuffix=${PN}-${PV}/;protocol=https"
 
 do_build[dirs] = "${B}"
 do_build(){

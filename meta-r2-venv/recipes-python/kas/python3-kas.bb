@@ -11,7 +11,7 @@ addtask do_unpack before do_build
 
 # https://github.com/siemens/kas/releases/tag/2.1.1
 SRCREV = "d02e87a0a70464803004d35792fafdd3b3b77f39"
-SRC_URI = "git://github.com/siemens/kas.git"
+SRC_URI = "git://github.com/siemens/kas.git;protocol=https"
 S = "${WORKDIR}/git"
 
 inherit bb_venv
