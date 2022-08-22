@@ -10,7 +10,7 @@ inherit bb_fetcher
 addtask do_unpack before do_build
 
 SRCREV = "749e5c488bc9469e3641e3694f164d9aab7de962"
-SRC_URI = "git://github.com/NGenetzky/python-frontmatter.git"
+SRC_URI = "git://github.com/NGenetzky/python-frontmatter.git;protocol=https"
 S = "${WORKDIR}/git"
 
 inherit bb_venv

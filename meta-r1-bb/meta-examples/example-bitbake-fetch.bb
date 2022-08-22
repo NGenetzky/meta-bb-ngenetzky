@@ -6,7 +6,7 @@ inherit bb_fetcher
 addtask do_unpack before do_build
 
 SRCREV = "82ea737a0b42a8b53e11c9cde141e9e9c0bd8c40"
-SRC_URI = "git://github.com/openembedded/bitbake.git"
+SRC_URI = "git://github.com/openembedded/bitbake.git;protocol=https"
 
 S = "${WORKDIR}/git"
 
