@@ -14,7 +14,7 @@ addtask do_unpack before do_build
 SRC_URI = "\
 https://download.grml.org/grml64-full_2021.07.iso;name=iso \
 "
-# SRC_URI[sha256sum.iso] = "71bb55c27ea5b881133bd558946c0b64193d596c1fbeea2ab344d66301d42465"
+SRC_URI[iso.sha256sum] = "7cec5cb3816edd55164d8d1cdfc315ecdda1ea26e5daa52fc8462f8d5bdd888d"
 
 do_build[dirs] = "${B}"
 do_build(){
