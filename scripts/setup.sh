@@ -24,6 +24,8 @@ setup_builddir(){
         "${bdir}/layers/"
     ln -fsr -t "${bdir}/layers/" \
         meta-*
+    ln -fsr -t "${bdir}/layers/" \
+        "$(pwd)"
 }
 
 main(){
